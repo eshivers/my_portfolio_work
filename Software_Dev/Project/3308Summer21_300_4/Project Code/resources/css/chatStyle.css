@@ -1,0 +1,168 @@
+.body{
+  margin:0;
+}
+#chat-body{
+    overflow: hidden;
+}
+/********************************************************************
+CHAT SELECT ************************************************
+********************************************************************/
+#chat-select-container{
+  height:80vh;
+}
+
+.chat-search{
+  padding-left: 40px;
+  padding-top:20px;
+  padding-bottom:15px;
+}
+
+.chat-select-scroll-box{
+  height:75vh;
+  width:350px;
+  border:1px;
+  overflow-y:scroll;
+}
+
+.chat-select .chats{
+  list-style-type: none;
+  min-width: 200px;
+  padding-top: 40px;
+}
+.chat-select .chats .chat-pic input{
+  width: 48px;
+  height: 48px;
+  float: left;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+}
+.chat-select .chats .chat-pic img{
+  width: 48px;
+  height: 48px;
+  float: left;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+}
+.chat-select .chats p.name{
+  text-align: right;
+  display:inline-block;
+  margin: 0;
+  padding: 0;
+  padding-top: 10px;
+  padding-left: 5px;
+}
+.chat-select .chats p.name:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/********************************************************************
+CHAT BOX ****************************************************
+********************************************************************/
+.selected-chat{
+  margin-top: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border:2px solid black;
+  background-color: lightgrey;
+  width:100%;
+}
+.selected-chat .name{
+  font-weight: bold;
+}
+
+.chat-box{
+    list-style-type: none;
+}
+.chat-scroll-box{
+  height:70vh;
+  width:100%;
+  border:1px;
+  overflow-y:scroll;
+  padding-top:20px;
+}
+.chat-box .user-pic img{
+  width: 48px;
+  height: 48px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+}
+.chat-box .chat-received .user-pic img{
+  float:left;
+}
+.chat-box .chat-sent .user-pic img{
+  float:right;
+  margin:15px;
+}
+.chat-box .chat-received .chat-text{
+    text-align: left;
+    display:inline-block;
+    margin: 0;
+    padding: 0;
+    padding-left: 10px;
+}
+.chat-box .chat-received .chat-sender{
+    text-align: left;
+    display:inline-block;
+    margin: 0;
+    padding: 0;
+    padding-left: 10px;
+    font-weight:bold;
+    font-size:18;
+}
+.chat-box .chat-received .chat-time{
+    text-align: left;
+    display:inline-block;
+    margin: 0;
+    padding: 0;
+    padding-left: 10px;
+    padding-top:25px;
+    font-size:12px;
+}
+
+.chat-box .chat-sent .chat-text{
+    float:right;
+    display:inline-block;
+    margin: 0;
+    padding: 0;
+    padding-right: 10px;
+    padding-top:20px;
+}
+.chat-box .chat-sent .chat-time{
+  float:right;
+  display:inline-block;
+  margin: 0;
+  padding: 0;
+  padding-right: 10px;
+  padding-top:55px;
+  font-size:12px;
+}
+
+.chat-box .chat-sent .chat-sender{
+  float:right;
+  display:inline-block;
+  margin: 0;
+  padding: 0;
+  padding-right: 10px;
+  padding-top:50px;
+  font-weight: bold;
+  font-size:18px;
+}
+
+.chat-input .textarea {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  resize: both;
+  min-height: 40px;
+  line-height: 20px;
+}
+
+.chat-input .textarea[contenteditable]:empty::before {
+  content: "Type your message here...";
+  color: gray;
+}
+}

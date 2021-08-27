@@ -1,0 +1,22 @@
+/* Register Page Styling*/
+body {
+  background: url('/img/rockies.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.jumbotron{
+  margin-top: 50px;
+  text-align: center;
+  background: rgba(355, 355,355, 0.5);
+	box-shadow: 0 5px 15px rgba(0, 0,0, 0.5);
+}
+
+.content{
+	margin-top: 50px;
+  padding:10px;
+  text-align: center;
+  background: rgba(355, 355,355, 0.5);
+	box-shadow: 0 5px 15px rgba(0, 0,0, 0.5);
+}

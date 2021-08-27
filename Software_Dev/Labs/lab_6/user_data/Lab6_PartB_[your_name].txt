@@ -1,0 +1,117 @@
+Lab #6 Take Home
+Your name: Erica Shivers
+
+
+---------------------------------------- Question 1 Query ---------------------------------------- 
+
+SELECT ship_city,COUNT(ship_city) FROM orders GROUP BY ship_city HAVING COUNT(ship_city) = ( 
+    SELECT MAX(order_count) FROM (
+        SELECT ship_city,COUNT(ship_city) AS order_count FROM orders GROUP BY ship_city) AS foo);
+
+---------------------------------------- Question 1 Results ---------------------------------------- 					
+
+   ship_city    | count 
+----------------+-------
+ Rio de Janeiro |    34
+(1 row)
+
+
+
+---------------------------------------- Question 2 Query ---------------------------------------- 
+SELECT p.product_id,p.product_name FROM products p INNER JOIN (
+SELECT product_id FROM order_details AS od,(
+SELECT od.order_id,COUNT(p.product_id) AS total_products FROM products AS p INNER JOIN (SELECT o.order_id,od.product_id,od.quantity FROM orders AS o INNER JOIN order_details as od ON
+o.order_id = od.order_id WHERE o.ship_city='Graz') AS od ON p.product_id = od.product_id GROUP BY od.order_id ORDER BY total_products) AS foo WHERE foo.order_id = od.order_id AND total_products < 3) AS foo ON p.product_id = foo.product_id;
+
+---------------------------------------- Question 2 Results ---------------------------------------- 					
+
+ product_id |         product_name          
+------------+-------------------------------
+         23 | Tunnbröd
+         63 | Vegie-spread
+         16 | Pavlova
+         48 | Chocolade
+         14 | Tofu
+         42 | Singaporean Hokkien Fried Mee
+         69 | Gudbrandsdalsost
+         71 | Flotemysost
+(8 rows)
+
+---------------------------------------- Question 3 Query ---------------------------------------- 
+
+SELECT company_name,total_orders FROM(SELECT c.company_name,COUNT(*) AS total_orders FROM customers AS c INNER JOIN orders AS o ON o.customer_id = c.customer_id GROUP BY c.company_name) AS foo  WHERE total_orders > (SELECT AVG(total_orders) FROM (SELECT c.company_name,COUNT(*) AS total_orders FROM customers AS c INNER JOIN orders AS o ON o.customer_id = c.customer_id GROUP BY c.company_name) AS foo);
+										put query here
+
+---------------------------------------- Question 3 Results ---------------------------------------- 					
+
+         company_name         | total_orders 
+------------------------------+--------------
+ Magazzini Alimentari Riuniti |           10
+ Lehmanns Marktstand          |           15
+ Mère Paillarde               |           13
+ Rattlesnake Canyon Grocery   |           18
+ Hungry Owl All-Night Grocers |           19
+ Königlich Essen              |           14
+ Frankenversand               |           15
+ Around the Horn              |           13
+ Victuailles en stock         |           10
+ HILARION-Abastos             |           18
+ Old World Delicatessen       |           10
+ LILA-Supermercado            |           14
+ Godos Cocina Típica          |           10
+ Die Wandernde Kuh            |           10
+ Blondesddsl père et fils     |           11
+
+...skipping 1 line
+ La maison d'Asie             |           14
+ Wartian Herkku               |           15
+ Bon app'                     |           17
+ Berglunds snabbköp           |           18
+ Suprêmes délices             |           12
+ Ernst Handel                 |           30
+ LINO-Delicateses             |           12
+ Ottilies Käseladen           |           10
+ Great Lakes Food Market      |           11
+ Save-a-lot Markets           |           31
+ Reggiani Caseifici           |           12
+ Queen Cozinha                |           13
+ QUICK-Stop                   |           28
+ Richter Supermarkt           |           10
+ Tortuga Restaurante          |           10
+ Folk och fä HB               |           19
+ Hanari Carnes                |           14
+
+...skipping 1 line
+ Bottom-Dollar Markets        |           14
+ B's Beverages                |           10
+ White Clover Markets         |           14
+ Piccolo und mehr             |           10
+ Island Trading               |           10
+(39 rows)
+										put result here	(output of the table)	
+
+---------------------------------------- Question 4 Query ---------------------------------------- 
+
+SELECT c.category_id,c.category_name,COUNT(*) AS total_products FROM categories AS c INNER JOIN products AS p ON p.category_id = c.category_id GROUP BY c.category_id;
+
+---------------------------------------- Question 4 Results ---------------------------------------- 					
+
+ category_id | category_name | total_products 
+-------------+---------------+----------------
+           2 | Condiments    |             12
+           3 | Confections   |             13
+           1 | Beverages     |             12
+           8 | Seafood       |             12
+(4 rows
+
+---------------------------------------- Question 5 Query ---------------------------------------- 
+
+SELECT product_id,product_name,total_sales FROM (SELECT p.product_id,p.product_name,SUM(od.quantity) AS total_sales FROM products AS p INNER JOIN order_details AS od ON p.product_id=od.product_id GROUP BY p.product_id) AS foo WHERE total_sales = (SELECT MAX(total_sales) FROM (SELECT p.product_id,p.product_name,SUM(od.quantity) AS total_sales FROM products AS p INNER JOIN order_details AS od ON p.product_id=od.product_id GROUP BY p.product_id) AS foo);
+
+---------------------------------------- Question 5 Results ---------------------------------------- 					
+
+ product_id |   product_name    | total_sales 
+------------+-------------------+-------------
+         60 | Camembert Pierrot |         945
+(1 row)
+

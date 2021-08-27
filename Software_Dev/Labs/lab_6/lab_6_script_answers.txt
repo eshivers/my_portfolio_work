@@ -1,0 +1,49 @@
+Erica Shivers
+
+
+CREATE TABLE IF NOT EXISTS universities (
+name VARCHAR(200) NOT NULL UNIQUE PRIMARY KEY,
+date_established DATE NOT NULL,
+address TEXT,
+std_population INTEGER,
+acceptance_rate FLOAT
+);
+
+INSERT INTO universities(name,date_established,address,std_population,acceptance_rate)
+VALUES ('CU Boulder',to_date('18760401','yyyymmdd'),'1100 28th St, Boulder, CO 80303',35000,80.0);
+
+SELECT name,major FROM football_players ORDER BY major;
+
+SELECT name,rushing_yards FROM football_players
+ WHERE rushing_yards >= 70;
+
+
+SELECT * FROM football_games WHERE visitor_name = 'Nebraska';
+
+SELECT * FROM football_games WHERE home_score > visitor_score;
+
+SELECT visitor_name,game_date FROM football_games
+WHERE game_date >= to_date('20200901','yyyymmdd') AND game_date <= to_date('20201231','yyyymmdd');
+
+SELECT avg(home_score) FROM football_games;
+
+SELECT major,COUNT(*) AS number_of_players FROM football_players GROUP BY major;
+
+SELECT major,COUNT(*) AS number_of_players FROM football_players
+ WHERE major = 'CSCI' GROUP BY major;
+
+CREATE VIEW view_1 as SELECT COUNT(*) as winning_games FROM football_games WHERE home_score > visitor_score;
+
+CREATE VIEW view_total_games as SELECT COUNT(*) as winning_games FROM football_games;
+
+SELECT ((CAST(winning_games AS FLOAT)/(SELECT total_games FROM view_total_games)) * 100) FROM view_1
+
+SELECT COUNT(*) FROM football_players INNER JOIN football_games 
+ON id = ANY (players) WHERE name = 'Cedric Vega';
+
+SELECT CAST(rushing_yards as FLOAT)/COUNT(*) FROM football_players INNER JOIN football_games 
+ON id = ANY (players) WHERE name = 'Cedric Vega' GROUP BY rushing_yards;
+
+
+
+

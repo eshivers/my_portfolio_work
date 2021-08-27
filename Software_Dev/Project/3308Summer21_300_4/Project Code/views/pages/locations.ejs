@@ -1,0 +1,92 @@
+<%- include ('../partials/header'); %>
+<link rel="stylesheet" href="/css/styleLocations.css">
+<title>Location Finder</title>
+<body>
+  <script src="../../resources/js/locations.js"></script>
+    <br>
+    <div class="border border-primary rounded" style="width: 55%; margin: 1% auto; padding: 1%">
+      <form class="" action="/locations/get_locations" method="post">
+        <div class="row">
+          <div class="col">
+            <input class="form-control" type="text" name="place" placeholder="Enter a place in Colorado">
+            <select name="resultPref" style="width: 400px; height: 30px">
+              <option value="1">--Search Prefrences--</option>
+              <option value="1">Show Most Relevant</option>
+              <option value="0">All Results (Best for Ambiguous Searches I.E. "Restaurants")</option>
+            </select>
+          </div>
+          <div class="col-1" style="margin: 0 2%">
+            <input class="btn btn-dark" type="submit" name="Submit" value = "Submit"/>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="card-columns" id="locations-stack" style="width: 55%; margin: 1% auto;">
+      <% if(places) {
+        var counter = 0;
+          places.forEach(function(places){
+            var name= places.name
+
+            if(places.opening_hours != null)
+            {
+              var open = places.opening_hours.open_now
+            }
+            if(places.rating != null)
+            {
+              var rating = places.rating
+            }
+            if(places.price_level != null)
+            {
+              var price = places.price_level
+            }
+            if(places.gemoetry != null)
+            {
+              var price = places.price_level
+            }
+            if(places.formatted_address != null)
+            {
+              var address = places.formatted_address
+            }
+            if(places.vicinity != null)
+            {
+              var vicinity = places.vicinity
+            }
+            var icon = places.icon  %>
+            <div class="card card-default border-secondary" style="width: 18rem; text-align: center;">
+              <br>
+              <img class="card-img-top" src="<%- icon %>" alt="image icon" style="width: 75px;height: 100px;">
+              <div class="card-body">
+                <h4 class="card-text"><%- name %></h4>
+                <% if(open != null){
+                  if(open == true) { %>
+                <h6 class="card-text" style="color: green;">Open Now!</h6>
+                   <% } else{ %>
+                    <h6 class="card-text" style="color: red;">Closed Right Now.</h6>
+                <% }} %>
+                <% if(rating){ %>
+                <p class="card-text" style="font-weight: bold;">Rating: <%- rating %></p>
+                <% } %>
+                <% if(address){ %>
+                <p class="card-text" style="font-style:italic">Address: <%- address %></p>
+                <% } %>
+                <% if(vicinity){ %>
+                <p class="card-text" style="font-style:italic">Address: <%- vicinity %></p>
+                <% } %>
+                <% if(price){ %>
+                <p class="card-text">Price Level(0-4): <%- price %></p>
+                <% } %>
+                <div class="card-footer bg-info" style="border: solid;">
+                  <p class="card-text" id="temp" style="font-weight: bold;">Current Temperature: <%- weather_for_places[counter].current.temp %> (°F)</p>
+                  <p class="card-text" id="temp" style="font-weight: bold;">Cloud Cover: <%- weather_for_places[counter].current.clouds %>%</p>
+                  <img class="card-img-bottom" src="http://openweathermap.org/img/wn/<%- weather_for_places[counter].current.weather[0].icon%>@2x.png" alt="weatherIcon">
+                  <a class="btn btn-primary" href="<%= `/locations/add?name=${name}&long=${weather_for_places[counter].lon}&lat=${weather_for_places[counter].lat}&address=${address}` %>">Add Location</a>
+                </div>
+                <% counter++ %>
+              </div>
+            </div>
+           <% }); %>
+          <% } %>
+    </div>
+
+<%- include ('../partials/footer'); %>

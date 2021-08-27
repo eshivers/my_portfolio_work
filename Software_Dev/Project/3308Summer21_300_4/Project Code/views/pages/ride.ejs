@@ -1,0 +1,96 @@
+<%- include ('../partials/header'); %>
+        <title>Edit Ride</title>
+</head>
+<body>
+    <div class="container">
+        &nbsp;
+        &nbsp;
+        <form action="/edit/<%= ride.id %>" method="POST">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="destination">Destination</label>
+                <div class="col-sm-10">
+                    <select name="destination" id="destination"> 
+                        <% 
+                            if(destinations && ride){
+                                destinations.forEach(destination => { %>
+                                    <option value="<%= destination.id %>" 
+                                        <%= destination.id == ride.Destination.id ? "selected" : '' %> 
+                                    > 
+                                        <%= destination.name %>
+                                    </option> 
+                                <%}); 
+                            }       
+                        %>  
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="origin">Origin</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="origin" id="origin"  placeholder="Enter origin" required
+                    value= "<%= ride ?  ride.start_point : '' %>"
+                    >
+                </div>
+            </div>
+            <div class="form-group row">
+                    <label  class="col-sm-2 col-form-label" for="seats">Number of Seats</label>
+                    <div class="col-sm-10">
+                            <input type="number" class="form-control" id="seats" name="seats" placeholder="Enter number" required
+                            value= "<%= ride ?  ride.seats_available : '' %>"
+                            >
+                    </div>
+            </div>
+            <div class="form-group row">
+                <label  class="col-sm-2 col-form-label" for="depart_date">Departure Date</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" id="depart_date" name="depart_date" placeholder="Enter as MM/DD/YYYY" required
+                    <% 
+                            if(ride){
+                                let temp = new Date(ride.departure)
+                                var newdate = temp.getFullYear() +  '-'
+                                            + ('0' + (temp.getMonth()+1)).slice(-2) + '-'
+                                            + ('0' + temp.getDate()).slice(-2);
+                            }
+                        %>
+                        value="<%= newdate %>"
+                    >
+                </div>
+            </div>
+            <div class="form-group row">
+                <label  class="col-sm-2 col-form-label" for="return_date">Return Date</label>
+                <div class="col-sm-10">
+                        <input type="date" class="form-control" id="return_date" name="return_date" placeholder="Enter as MM/DD/YYYY"
+                        <% 
+                            if(ride){
+                                let temp = new Date(ride.end_date)
+                                var newdate = temp.getFullYear() +  '-'
+                                            + ('0' + (temp.getMonth()+1)).slice(-2) + '-'
+                                            + ('0' + temp.getDate()).slice(-2);
+                            }
+                        %>
+                        value="<%= newdate %>"
+                        >
+                </div>
+            </div>
+            <div class="form-group row">
+                <label  class="col-sm-2 col-form-label" for="car_make">Vehicle Make</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="car_make" name="car_make" placeholder="Enter make" required
+                    value= "<%= ride ?  ride.vehicle_make : '' %>"
+                    >
+                </div>
+            </div>
+            <div class="form-group row">
+                <label  class="col-sm-2 col-form-label" for="car_model">Vehicle Model</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="car_model" name="car_model" placeholder="Enter model" required
+                    value= "<%= ride ?  ride.vehicle_model : '' %>"
+                    
+                    >
+                </div>
+            </div>
+            <input type="submit" value="Save" class="btn btn-primary btn-block" style="height: fit-content;">
+        </form>
+    </div>
+</body>
+<%- include ('../partials/footer'); %>

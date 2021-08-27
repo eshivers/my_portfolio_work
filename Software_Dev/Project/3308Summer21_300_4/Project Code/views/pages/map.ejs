@@ -1,0 +1,86 @@
+    <%- include ('../partials/header'); %>
+    <link rel="stylesheet" href="/css/styleMap.css">
+    <title>Map</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  </head>
+    <body>
+      <br>
+      <script>
+        function initAutocomplete() {
+          const colo = { lat: 39.635757, lng:-106.362984 };
+    const map = new google.maps.Map(document.getElementById("map"), {
+      center: colo,
+      zoom: 9,
+      mapTypeId: "roadmap",
+    });
+    // Create the search box and link it to the UI element.
+    const input = document.getElementById("pac-input")
+    const searchBox = new google.maps.places.SearchBox(input);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    // Bias the SearchBox results towards current map's viewport.
+    map.addListener("bounds_changed", () => {
+      searchBox.setBounds(map.getBounds());
+    });
+    let markers = [];
+    // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
+    searchBox.addListener("places_changed", () => {
+      const places = searchBox.getPlaces();
+      console.log(places);
+      let form_input = document.querySelector('#submitted_place');
+      form_input.value = document.querySelector('#pac-input').value;
+      if (places.length == 0) {
+        return;
+      }
+      markers.forEach((marker) => {
+        marker.setMap(null);
+      });
+      markers = [];
+      const bounds = new google.maps.LatLngBounds();
+      places.forEach((place) => {
+        if (!place.geometry || !place.geometry.location) {
+          console.log("Returned place contains no geometry");
+          return;
+        }
+        const icon = {
+          url: place.icon,
+          size: new google.maps.Size(71, 71),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(17, 34),
+          scaledSize: new google.maps.Size(25, 25),
+        };
+        markers.push(
+          new google.maps.Marker({
+            map,
+            icon,
+            title: place.name,
+            position: place.geometry.location,
+          })
+        );
+
+        if (place.geometry.viewport) {
+          bounds.union(place.geometry.viewport);
+        } else {
+          bounds.extend(place.geometry.location);
+        }
+      });
+      map.fitBounds(bounds);
+    });
+  }
+      </script>
+      <div id="map" style="width: 80%; height: 700px; margin: auto; border:10px solid cadetblue">
+      </div>
+        <br>
+        <br>
+      </div>
+      <form method="POST" action="/locations/get_locations">
+        <div class="row" style="margin-left: auto; margin-right: auto;">
+          <input class="form-control" type="text" id="pac-input" name="place" placeholder="Enter a place in Colorado">
+        </div>
+          <input type="hidden" id="submitted_place" name="submitted_place">
+      </form>
+      <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPSOpMS_xDzRDg50J8ee34DTdmHQOkUj0&callback=initAutocomplete&libraries=places&v=weekly"
+      async
+    ></script>
+        <%- include ('../partials/footer'); %>

@@ -1,0 +1,100 @@
+    <%- include ('../partials/header'); %>
+    <link rel="stylesheet" href="/css/chatStyle.css">
+    <title>Chat</title>
+    <!--Body of Website-->
+        <div class="conatiner" id="chat-body">
+          <div class="row">
+            <div class="col-3" id="chat-select-container">
+              <div class="row">
+                <div class=chat-search>
+                  <input type="text" placeholder="Search">
+                  <button class="btn btn-light" onclick="search()"> Search </button>
+                </div>
+              </div>
+              <form action="/chat/select_chat" method="POST">
+                <div class="chat-select-scroll-box">
+                  <ul class="chat-select">
+                    <%
+                    if(chats){
+                      chats_html = '';
+                      for(let i = 0; i<chats.length; i++)
+                      {
+                        chats_html += '<li class="chats"><div class="chat-pic">' +
+                            '<input type="image" name="submit" src="/img/default_profile_pic.jpg" alt="Profile Pic"></input></div>' +
+                            '<p class="name"><button type="submit" name="submit" value="' + chats[i].chat_id +'">Chat Id: ' + chats[i].chat_id + '</button></p></li>'
+                      }
+                    %>
+                    <%- chats_html %>
+                    <%}%>
+                  </ul>
+                </div>
+              </form>
+            </div>
+            <!--End of chat-select-->
+            <!--Start of chatbox-->
+            <div class="col-8">
+              <div class="row">
+                <div class="selected-chat">
+                  <span>To: <span class="name"></span>Chat <%- chat_id %></span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="chat-scroll-box">
+                    <ul class="chat-box" >
+                      <!--Received message template-->
+                      <%
+                      if(chat_messages){
+                        msg = '';
+                        for(let i = 0; i < chat_messages.length; i++){
+                          if(chat_messages[i].user_id == curr_user_id){
+                            msg += '<div class="row"><li class="chat-sent"><div class="user-pic">' +
+                              '<img src="/img/default_profile_pic.jpg" alt "Profile Pic" onclick="openProfile();"></div>' +
+                              '<div class="chat-time">' + chat_messages[i].createdAt.toLocaleTimeString() + '</div><div class="chat-sender">You</div>' +
+                              '<div class="chat-text">' + chat_messages[i].line_text +'</div></li></div>';
+                          }
+                          else {
+                            msg += '<li class="chat-received"><div class="user-pic">' +
+                                '<img src="/img/default_profile_pic.jpg" alt "Profile Pic" onclick="openProfile();"></div>' +
+                                '<div class="chat-text">' + chat_messages[i].line_text + '</div><br>' +
+                                '<div class="chat-sender">Sender Id: '+ chat_messages[i].user_id + '</div><span class="chat-time">' + chat_messages[i].createdAt.toLocaleTimeString() +'</span></li>';
+                          }
+                        }
+                        %>
+                      <%- msg %>
+                      <% } %>
+                    </ul>
+                  </div>
+
+                  <!--Script to submit chat message upon pressing enter key"-->
+                  <script>
+                    function pressed(e){
+                      if ((window.event ? event.keyCode : e.which)==13 && (window.event ? event.keyCode : e.which)!=e.shiftKey){
+                        document.forms["message-submit"].submit();
+                        event.target.value = "";
+                        var chat = document.getElementById('chat-scroll-box');
+                        chat.scrollTop = chat.scrollHeight; //Should make chat scroll to bottom after submitting but doesn't
+                      }
+                    }
+                  </script>
+
+                  <form name="message-submit" action="/chat/send_message" method="POST">
+                    <div class="chat-input mt-auto mb-0">
+                      <%
+                        console.log("Chat_id in ejs: ", chat_id);
+                        if(!chat_id){
+                          chat_id = 0;
+                        }
+                        chat_id_send = '<input name="chat_id_send" type="hidden" value=' + chat_id + '>';
+                        %>
+                      <%- chat_id_send %>
+                      <textarea name="message" onkeydown="pressed(event)" class="form-control" rows="3" placeholder="Type your message here..."></textarea>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!--End of chatbox-->
+          </div>
+        </div>
+        <%- include ('../partials/footer'); %>
